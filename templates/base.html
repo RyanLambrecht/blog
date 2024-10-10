@@ -1,18 +1,35 @@
 {% load static %}
 <html>
-    <head>
-        <link rel="stylesheet" href="{% static 'css/base.css' %}">
-        <title>Django Blog</title>
-    </head>
-<body>
-    <h1>Django blog</h1>
+  <head>
+    <title>Django Blog</title>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400" rel="stylesheet" />
+    <link href="{% static 'css/base.css' %}" rel="stylesheet" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="nav-left">
+        <h1><a href="{% url 'home' %}">Django Blog</a></h1>
+      </div>
+      <div class="nav-right">
+        <a href="{% url 'post_new' %}">+ New Blog Post</a>
+      </div>
+    </header>
 
-    {% block content %}
+    <div>
+      {% if user.is_authenticated %}
+        <p>Hi {{ user.username }}!</p>
+      {% else %}
+        <p>You are not logged in.</p>
+        <a href="{% url 'login' %}">Log In</a>
+      {% endif %}
+
+      {% block content %}
         {% for post in posts %}
-            <h2>{{ post.title }}</h2>
-            <p><strong>Author:</strong> {{ post.author }}</p>
-            <p>{{ post.body }}</p>
+          <h2>{{ post.title }}</h2>
+          <p><strong>Author:</strong> {{ post.author }}</p>
+          <p>{{ post.body }}</p>
         {% endfor %}
-    {% endblock content %}
-</body>
+      {% endblock %}
+    </div>
+  </body>
 </html>
